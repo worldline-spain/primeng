@@ -2,6 +2,7 @@ import {NgModule,Component,ElementRef,OnDestroy,DoCheck,OnChanges,Input,Output,E
 import {CommonModule} from '@angular/common';
 
 declare var jQuery: any;
+declare var window: any;
 
 @Component({
     selector: 'p-schedule',
@@ -305,7 +306,12 @@ export class Schedule implements DoCheck,OnDestroy,OnInit,OnChanges,AfterViewChe
 
     initialize() {
         this.schedule = jQuery(this.el.nativeElement.children[0]);
-        this.schedule.fullCalendar(this.config);
+        if(this.schedule.fullCalendar) {
+            this.schedule.fullCalendar(this.config);
+        } else {
+            window.fullCalendar(this.config);
+        }
+
         if(this.events) {
             this.schedule.fullCalendar('addEventSource', this.events);
         }
